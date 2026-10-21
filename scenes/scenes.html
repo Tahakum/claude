@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>Tahakum Promo</title>
+<style>
+@font-face { font-family:'Cairo'; src:url('assets/fonts/cairo-v31-arabic_latin-regular.ttf'); font-weight:400; }
+@font-face { font-family:'Cairo'; src:url('assets/fonts/cairo-v31-arabic_latin-600.ttf'); font-weight:600; }
+@font-face { font-family:'Cairo'; src:url('assets/fonts/cairo-v31-arabic_latin-700.ttf'); font-weight:700; }
+@font-face { font-family:'Cairo'; src:url('assets/fonts/cairo-v31-arabic_latin-900.ttf'); font-weight:900; }
+:root{
+  --navy:#0E3A34; --navy-deep:#0B1F1B; --navy-black:#071512;
+  --petrol:#155148; --teal:#3DBD96; --teal-light:#8FE3C8;
+  --white:#F6F8F9; --sand:#C9A24B; --gold:#C9A24B; --gold-2:#E3C074;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1080px;height:1920px;overflow:hidden;background:#000;}
+body{font-family:'Cairo';}
+#stage{position:absolute;inset:0;width:1080px;height:1920px;overflow:hidden;}
+.scene{position:absolute;inset:0;opacity:0;}
+.bgfill{position:absolute;inset:0;}
+.vignette{position:absolute;inset:0;pointer-events:none;z-index:50;
+  background:radial-gradient(ellipse 85% 70% at 50% 46%, transparent 55%, rgba(5,10,18,.55) 100%);}
+#grain{position:absolute;inset:0;z-index:60;opacity:.055;pointer-events:none;}
+.ctr{position:absolute;left:0;right:0;text-align:center;}
+
+/* ---------- S1 ---------- */
+#s1 .line1{top:680px;font-size:118px;font-weight:900;color:var(--white);line-height:1.3;
+  text-shadow:0 0 80px rgba(47,163,154,.35);}
+#s1 .line2{top:1105px;font-size:68px;font-weight:700;color:var(--teal-light);}
+#s1 .flash{position:absolute;inset:0;background:radial-gradient(circle at 50% 46%,rgba(255,255,255,.9),transparent 60%);}
+#s1 .ring{position:absolute;left:50%;top:46%;width:300px;height:300px;border:6px solid rgba(127,209,200,.8);
+  border-radius:50%;transform:translate(-50%,-50%);}
+
+/* ---------- S2 ---------- */
+.beat{position:absolute;left:0;right:0;text-align:center;}
+.beat .w1{font-size:132px;font-weight:900;color:var(--white);display:block;line-height:1.15;}
+.beat .w2{font-size:96px;font-weight:700;color:var(--gold-2);display:block;line-height:1.2;}
+#b1{top:700px;} #b2{top:700px;} #b3{top:700px;}
+#tline{position:absolute;bottom:260px;left:140px;right:140px;height:6px;background:rgba(255,255,255,.12);border-radius:3px;}
+#tfill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-2));border-radius:3px;width:100%;transform-origin:right;}
+
+/* ---------- S3 ---------- */
+#s3 canvas{position:absolute;inset:0;}
+#s3 .logowrap{position:absolute;left:50%;top:44%;transform:translate(-50%,-50%);text-align:center;}
+.logoicon{background:url('assets/icon.png') no-repeat center;background-size:contain;
+  filter:drop-shadow(0 0 60px rgba(47,163,154,.55));margin:0 auto;}
+#s3 .logoicon{width:380px;height:490px;}
+#s3 .brand{font-size:150px;font-weight:900;color:var(--white);margin-top:10px;line-height:1.1;
+  text-shadow:0 0 70px rgba(47,163,154,.4);}
+#s3 .slogan{font-size:58px;font-weight:600;color:var(--teal-light);margin-top:6px;letter-spacing:1px;}
+#s3 .logowrap{top:46%;}
+#s3 .rays{position:absolute;left:50%;top:44%;width:1600px;height:1600px;transform:translate(-50%,-50%);
+  background:conic-gradient(from 0deg, transparent 0deg, rgba(47,163,154,.07) 8deg, transparent 16deg,
+  transparent 40deg, rgba(47,163,154,.06) 48deg, transparent 56deg, transparent 90deg,
+  rgba(47,163,154,.07) 98deg, transparent 106deg, transparent 150deg, rgba(47,163,154,.06) 158deg,
+  transparent 166deg, transparent 210deg, rgba(47,163,154,.07) 218deg, transparent 226deg,
+  transparent 270deg, rgba(47,163,154,.06) 278deg, transparent 286deg, transparent 320deg,
+  rgba(47,163,154,.05) 328deg, transparent 336deg);border-radius:50%;}
+
+/* ---------- phone frame (S4/S5) — light premium ---------- */
+.phone{position:absolute;left:50%;width:760px;height:1326px;transform:translateX(-50%);
+  border-radius:74px;background:linear-gradient(145deg,#2A2F33,#101316 60%);padding:14px;
+  box-shadow:0 50px 90px rgba(14,58,52,.28), 0 12px 30px rgba(14,58,52,.18), inset 0 0 0 3px #3A4046;}
+.phone::after{content:'';position:absolute;left:-120px;right:-120px;bottom:-56px;height:70px;
+  background:radial-gradient(ellipse 50% 100% at 50% 50%, rgba(14,58,52,.30), transparent 70%);z-index:-1;}
+.phone .screen{width:100%;height:100%;border-radius:60px;overflow:hidden;position:relative;background:#fff;}
+.phone .screen::after{content:'';position:absolute;inset:0;z-index:9;pointer-events:none;
+  background:linear-gradient(115deg, rgba(255,255,255,.14) 0%, rgba(255,255,255,.05) 18%, transparent 30%);}
+.phone .notch{position:absolute;top:14px;left:50%;transform:translateX(-50%);width:210px;height:28px;
+  background:#101316;border-radius:16px;z-index:10;}
+.screen .shotwrap{position:absolute;inset:0;overflow:hidden;}
+.screen img.shot{position:absolute;left:0;top:-3.2%;width:100%;height:103.2%;object-fit:cover;}
+
+/* ---------- S4 ---------- */
+#s4 .phone{top:420px;}
+#s4 .cap{position:absolute;left:60px;right:60px;text-align:center;z-index:20;}
+#s4 .cap .pill{display:inline-block;background:rgba(14,58,52,.95);
+  border:2px solid rgba(201,162,75,.45);border-radius:40px;padding:16px 48px;
+  box-shadow:0 14px 40px rgba(14,58,52,.25);}
+#s4 .cap .pill span{font-size:54px;font-weight:900;color:var(--white);}
+#s4 .cap .pill b{color:var(--gold-2);}
+#s4 #cap1{top:600px;z-index:30;} #s4 #cap2{top:130px;}
+#s4scrim{position:absolute;left:50%;top:436px;transform:translateX(-50%);width:728px;height:860px;
+  border-radius:58px 58px 0 0;z-index:25;opacity:0;
+  background:linear-gradient(to bottom, rgba(250,252,250,.99) 0%, rgba(250,252,250,.97) 55%, rgba(250,252,250,.85) 80%, transparent 100%);}
+#s4 .glowring{position:absolute;left:50%;top:93.9%;width:170px;height:170px;border:8px solid var(--teal-light);
+  border-radius:50%;transform:translate(-50%,-50%);box-shadow:0 0 50px rgba(127,209,200,.8), inset 0 0 30px rgba(127,209,200,.5);}
+
+/* ---------- S5 ---------- */
+.sub5{position:absolute;inset:0;opacity:0;}
+.sub5 .phone{top:470px;}
+.sub5 .band{position:absolute;top:150px;left:0;right:0;text-align:center;}
+.sub5 .band .t{font-size:74px;font-weight:900;color:var(--navy);line-height:1.3;}
+.sub5 .band .accent{color:var(--gold);}
+.sub5 .band .underline{width:220px;height:8px;border-radius:4px;margin:14px auto 0;
+  background:linear-gradient(90deg,var(--gold),var(--gold-2));}
+
+/* ---------- S6 ---------- */
+#s6card{background:transparent;border-radius:44px;padding:0;}
+#s6card img{width:400px !important;filter:drop-shadow(0 18px 44px rgba(14,58,52,.22));}
+#s6 .logowrap{position:absolute;left:50%;top:430px;transform:translate(-50%,-50%);text-align:center;}
+#s6 .cta{top:680px;font-size:116px;font-weight:900;color:var(--navy);}
+#s6 .badges{position:absolute;top:940px;left:0;right:0;display:flex;justify-content:center;gap:40px;}
+#hakwrap{position:absolute;left:-30px;bottom:-14px;width:600px;transform-origin:50% 100%;z-index:40;
+  filter:drop-shadow(0 30px 60px rgba(0,0,0,.5));}
+#hakimg{width:100%;display:block;}
+#haklid{position:absolute;border-radius:50%;transform-origin:50% 0%;transform:scaleY(0);
+  border-bottom:3px solid rgba(70,45,35,.5);}
+#hakspark{position:absolute;color:var(--gold-2);font-size:64px;transform:scale(0);
+  text-shadow:0 0 24px rgba(227,192,116,.9);z-index:45;}
+.badge{display:flex;align-items:center;gap:20px;background:#0A1220;border:2px solid rgba(255,255,255,.25);
+  border-radius:26px;padding:22px 44px;direction:ltr;}
+.badge svg{width:56px;height:56px;}
+.badge .bt{color:#fff;text-align:left;font-weight:600;}
+.badge .bt small{display:block;font-size:24px;opacity:.75;line-height:1.1;}
+.badge .bt span{display:block;font-size:42px;font-weight:700;line-height:1.2;}
+#s6 .url{top:1150px;font-size:56px;font-weight:700;color:var(--petrol);letter-spacing:2px;}
+#s6 .pulse{position:absolute;left:50%;top:745px;width:400px;height:400px;border:5px solid rgba(227,192,116,.75);
+  border-radius:50%;transform:translate(-50%,-50%);}
+</style>
+</head>
+<body>
+<div id="stage">
+
+  <!-- S1: HOOK -->
+  <div class="scene" id="s1">
+    <div class="bgfill" style="background:radial-gradient(ellipse at 50% 40%, #0E3A34 0%, var(--navy-deep) 60%, var(--navy-black) 100%);"></div>
+    <div class="flash" id="s1flash"></div>
+    <div class="ring" id="s1ring"></div>
+    <div class="ctr line1" id="s1l1">عندك مشكلة<br>قانونية؟</div>
+    <div class="ctr line2" id="s1l2">وما تدري وش تسوي؟</div>
+  </div>
+
+  <!-- S2: PAIN -->
+  <div class="scene" id="s2">
+    <div class="bgfill" id="s2bg"></div>
+    <div class="beat" id="b1"><span class="w1">محامي؟</span><span class="w2">غالي.</span></div>
+    <div class="beat" id="b2"><span class="w1">مواعيد؟</span><span class="w2">بعيدة.</span></div>
+    <div class="beat" id="b3"><span class="w1">وحقّك؟</span><span class="w2">ينتظر…</span></div>
+    <div id="tline"><div id="tfill"></div></div>
+  </div>
+
+  <!-- S3: REVEAL (light burst, full original logo) -->
+  <div class="scene" id="s3">
+    <div class="bgfill" style="background:radial-gradient(ellipse at 50% 44%, #0C2622 0%, var(--navy-black) 100%);"></div>
+    <div class="bgfill" id="s3light" style="background:radial-gradient(ellipse at 50% 44%, #FFFFFF 0%, #F4F6F4 45%, #E4EDE8 100%);opacity:0;"></div>
+    <div class="rays" id="s3rays"></div>
+    <canvas id="pcanvas" width="1080" height="1920"></canvas>
+    <div class="logowrap">
+      <img id="s3logo" src="assets/logo.png" style="width:720px;filter:drop-shadow(0 24px 60px rgba(14,58,52,.25));">
+    </div>
+    <div class="ctr" id="s3tag" style="top:1310px;font-size:46px;font-weight:600;color:#476B62;letter-spacing:1px;opacity:0;"></div>
+  </div>
+
+  <!-- S4: HAKEEM WOW -->
+  <div class="scene" id="s4">
+    <div class="bgfill" style="background:linear-gradient(170deg, #F7F9F7 0%, #EAF2ED 55%, #DCEAE2 130%);"></div>
+    <div class="bgfill" style="background:radial-gradient(ellipse 90% 50% at 50% 0%, rgba(201,162,75,.10), transparent 60%);"></div>
+    <div id="s4scrim"></div>
+    <div class="cap" id="cap1"><div class="pill"><span>اسأل <b>حكيم</b>… مستشارك القانوني الذكي</span></div></div>
+    <div class="cap" id="cap2"><div class="pill"><span>جواب نظامي <b>في ثوانٍ</b></span></div></div>
+    <div class="phone" id="s4phone">
+      <div class="screen">
+        <div class="notch"></div>
+        <div class="shotwrap" id="s4zoomwrap">
+          <img id="s4img" src="assets/rec/rec_00000.png" style="position:absolute;left:0;top:0;width:100%;height:100%;object-fit:cover;">
+          <div class="glowring" id="s4ring"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- S5: SERVICES -->
+  <div class="scene" id="s5">
+    <div class="bgfill" style="background:linear-gradient(160deg, #F7F9F7 0%, #E9F1EC 50%, #DCEAE2 140%);"></div>
+    <div class="sub5" id="s5a">
+      <div class="band"><div class="t">استشارة فورية من <span class="accent">محامين مرخصين</span></div><div class="underline"></div></div>
+      <div class="phone"><div class="screen"><div class="notch"></div><div class="shotwrap"><img class="shot" src="assets/08_instant_consult.png"></div></div></div>
+    </div>
+    <div class="sub5" id="s5b">
+      <div class="band"><div class="t">عقود جاهزة… <span class="accent">بضغطة</span></div><div class="underline"></div></div>
+      <div class="phone"><div class="screen"><div class="notch"></div><div class="shotwrap"><img class="shot" src="assets/06_store.png"></div></div></div>
+    </div>
+    <div class="sub5" id="s5c">
+      <div class="band"><div class="t">وكّل قضيتك <span class="accent">وأنت بمكانك</span></div><div class="underline"></div></div>
+      <div class="phone"><div class="screen"><div class="notch"></div><div class="shotwrap"><img class="shot" src="assets/09_tawkeel.png"></div></div></div>
+    </div>
+  </div>
+
+  <!-- S6: CTA -->
+  <div class="scene" id="s6">
+    <div class="bgfill" style="background:linear-gradient(165deg, #F8FAF8 0%, #ECF3EE 45%, #D8E8DF 120%);"></div>
+    <div class="bgfill" style="background:radial-gradient(ellipse 100% 55% at 50% 108%, rgba(14,58,52,.16), transparent 65%);"></div>
+    <div class="pulse" id="s6pulse"></div>
+    <div class="logowrap" id="s6logow"><div id="s6card"><img src="assets/logo.png" style="width:330px;display:block;"></div></div>
+    <div class="ctr cta" id="s6cta">حمّل تحاكم الآن</div>
+    <div class="badges" id="s6badges">
+      <div class="badge">
+        <svg viewBox="0 0 24 24" fill="#fff"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.53 4.08zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg>
+        <div class="bt"><small>Download on the</small><span>App Store</span></div>
+      </div>
+      <div class="badge">
+        <svg viewBox="0 0 24 24"><path fill="#00E3A5" d="M3.6 2.4l10.8 9.6L3.6 21.6c-.37-.19-.6-.57-.6-1.05V3.45c0-.48.23-.86.6-1.05z"/><path fill="#FFD400" d="M17.4 9L14.4 12l3 3 3.3-1.86c.9-.51.9-1.77 0-2.28L17.4 9z"/><path fill="#FF4757" d="M3.6 21.6l10.8-9.6 3 3-12.3 6.9c-.5.28-1.06.1-1.5-.3z"/><path fill="#00B2FF" d="M3.6 2.4c.44-.4 1-.58 1.5-.3L17.4 9l-3 3L3.6 2.4z"/></svg>
+        <div class="bt"><small>GET IT ON</small><span>Google Play</span></div>
+      </div>
+    </div>
+    <div class="ctr url" id="s6url">tahakum.ai</div>
+    <div id="hakwrap">
+      <img id="hakimg" src="assets/hakeem.png">
+      <div id="haklid"></div>
+      <div id="hakspark">✦</div>
+    </div>
+  </div>
+
+  <div class="vignette"></div>
+  <canvas id="grain" width="540" height="960"></canvas>
+</div>
+
+<script>
+/* ============ easing ============ */
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const P=(t,s,d)=>clamp((t-s)/d,0,1);
+const easeOut=p=>1-Math.pow(1-p,3);
+const easeIn=p=>p*p*p;
+const easeInOut=p=>p<.5?4*p*p*p:1-Math.pow(-2*p+2,3)/2;
+const expoOut=p=>p===1?1:1-Math.pow(2,-10*p);
+const backOut=p=>{const c=1.70158*1.2;return 1+(c+1)*Math.pow(p-1,3)+c*Math.pow(p-1,2);};
+const lerp=(a,b,p)=>a+(b-a)*p;
+
+const $=id=>document.getElementById(id);
+const stage=$('stage');
+const scenes={s1:$('s1'),s2:$('s2'),s3:$('s3'),s4:$('s4'),s5:$('s5'),s6:$('s6')};
+
+/* seeded rng */
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;}}
+
+/* ============ S3 particles ============ */
+const NP=170, parts=[];
+{const r=mulberry32(7);
+ for(let i=0;i<NP;i++){
+   const ang=r()*Math.PI*2, rad=900+r()*500;
+   const tang=r()*Math.PI*2, trad=120+r()*240;
+   parts.push({
+     sx:540+Math.cos(ang)*rad, sy:845+Math.sin(ang)*rad,
+     tx:540+Math.cos(tang)*trad, ty:845+Math.sin(tang)*trad*0.9,
+     delay:r()*0.25, size:2+r()*5, hue:r()
+   });
+ }}
+const pctx=$('pcanvas').getContext('2d');
+
+/* grain */
+const gctx=$('grain').getContext('2d');
+function drawGrain(frame){
+  const r=mulberry32(frame*7919+13);
+  const img=gctx.createImageData(540,960);
+  const d=img.data;
+  for(let i=0;i<d.length;i+=16){ /* sparse noise */
+    const v=r()*255|0; d[i]=v;d[i+1]=v;d[i+2]=v;d[i+3]=40;
+  }
+  gctx.putImageData(img,0,0);
+}
+
+/* shake helper */
+function shake(t,hit,amp,freq,decay){
+  if(t<hit) return {x:0,y:0};
+  const dt=t-hit, a=amp*Math.exp(-dt*decay);
+  return {x:Math.sin(dt*freq)*a, y:Math.cos(dt*freq*1.3)*a*0.7};
+}
+
+function setT(el,props){
+  let tr='';
+  if(props.x!==undefined||props.y!==undefined) tr+=`translate(${props.x||0}px,${props.y||0}px) `;
+  if(props.scale!==undefined) tr+=`scale(${props.scale}) `;
+  el.style.transform=tr;
+  if(props.o!==undefined) el.style.opacity=props.o;
+  if(props.blur!==undefined) el.style.filter=`blur(${props.blur}px)`;
+}
+
+/* ============ MASTER TIMELINE ============ */
+window.seek=function(t){
+  drawGrain(Math.floor(t*30));
+  for(const k in scenes) scenes[k].style.opacity=0;
+
+  /* ---------- S1: 0 - 2.5 ---------- */
+  if(t<2.6){
+    scenes.s1.style.opacity=1;
+    /* slam at 0.12 */
+    const pIn=P(t,0.12,0.3);
+    setT($('s1l1'),{scale:lerp(3.2,1,expoOut(pIn)), o:pIn===0?0:lerp(0,1,easeOut(P(t,0.12,0.15))), blur:lerp(26,0,expoOut(pIn))});
+    const sh=shake(t,0.2,26,55,9);
+    /* flash+ring at impact 0.2 */
+    setT($('s1flash'),{o:t<0.2?0:0.85*Math.exp(-(t-0.2)*9)});
+    const rp=P(t,0.2,0.7);
+    setT($('s1ring'),{scale:lerp(0.3,4.2,easeOut(rp)), o:rp>=1?0:0.8*(1-rp)});
+    /* line2 pops at 1.25 */
+    const p2=P(t,1.25,0.35);
+    setT($('s1l2'),{y:lerp(60,0,backOut(p2)), o:p2, blur:lerp(8,0,p2)});
+    /* exit push 2.3-2.55 */
+    const ex=P(t,2.3,0.25);
+    stage.style.transform=`translate(${sh.x}px,${sh.y-ex*ex*140}px)`;
+    scenes.s1.style.opacity=1-easeIn(P(t,2.35,0.22));
+  }
+
+  /* ---------- S2: 2.5 - 6.5 ---------- */
+  if(t>=2.45&&t<6.75){
+    scenes.s2.style.opacity=1;
+    /* darkening bg */
+    const dk=P(t,2.5,4);
+    $('s2bg').style.background=`radial-gradient(ellipse at 50% 42%, ${dk<0.5?'#10342E':'#0C2622'} 0%, var(--navy-black) ${lerp(80,55,dk)}%)`;
+    const beats=[{el:'b1',at:2.65},{el:'b2',at:3.95},{el:'b3',at:5.25}];
+    let sx=0,sy=0;
+    beats.forEach((b,i)=>{
+      const el=$(b.el);
+      const pw=P(t,b.at,0.28);
+      const active = t>=b.at && (i===2 ? t<6.55 : t<beats[i+1].at);
+      const w1=el.querySelector('.w1'), w2=el.querySelector('.w2');
+      el.style.opacity=active?1:0;
+      if(active){
+        setT(w1,{x:lerp(-240,0,expoOut(pw)), o:pw, blur:lerp(14,0,expoOut(pw))});
+        const p2=P(t,b.at+0.42,0.22);
+        setT(w2,{scale:lerp(2.4,1,expoOut(p2)), o:p2});
+        const s=shake(t,b.at+0.42,14,48,10); sx+=s.x; sy+=s.y;
+      }
+    });
+    /* time line depleting */
+    $('tfill').style.transform=`scaleX(${1-P(t,2.6,3.8)})`;
+    $('tfill').style.opacity = t>6.3 ? (1-P(t,6.3,0.25)) : 1;
+    stage.style.transform=`translate(${sx}px,${sy}px)`;
+    scenes.s2.style.opacity = t>6.3 ? 1-easeIn(P(t,6.35,0.3)) : 1;
+  }
+
+  /* ---------- S3: 6.5 - 9.5 (light burst reveal) ---------- */
+  pctx.clearRect(0,0,1080,1920);
+  if(t>=6.55&&t<9.8){
+    scenes.s3.style.opacity=1;
+    /* silence gap 6.55-6.9 near black, then burst to light */
+    const burst=P(t,6.9,0.18);
+    $('s3light').style.opacity=burst;
+    document.querySelector('.vignette').style.opacity=lerp(1,0.35,burst);
+    /* particles converge on light bg 6.9 - 7.7 */
+    const pc=P(t,6.95,0.85);
+    if(pc>0&&pc<1.15){
+      for(const p of parts){
+        const lp=clamp((pc-p.delay)/(1-p.delay),0,1);
+        if(lp<=0) continue;
+        const e=easeInOut(lp);
+        const x=lerp(p.sx,p.tx,e), y=lerp(p.sy,p.ty,e);
+        const fade=lp>0.85?(1-lp)/0.15:1;
+        pctx.beginPath();
+        pctx.fillStyle=p.hue>0.55?`rgba(201,162,75,${0.8*fade})`:`rgba(14,58,52,${0.55*fade})`;
+        pctx.arc(x,y,p.size*(1-lp*0.4),0,7);
+        pctx.fill();
+      }
+    }
+    /* full original logo materializes 7.45 */
+    const lg=P(t,7.45,0.55);
+    setT($('s3logo'),{scale:lerp(0.62,1,backOut(lg)), o:lg, blur:lerp(16,0,lg)});
+    /* tagline */
+    const tg=P(t,8.15,0.4);
+    setT($('s3tag'),{y:lerp(46,0,easeOut(tg)), o:tg});
+    /* soft green rays on light bg */
+    $('s3rays').style.transform=`translate(-50%,-50%) rotate(${t*3}deg)`;
+    $('s3rays').style.opacity=lg*0.5;
+    const sh3=shake(t,7.5,14,42,8);
+    stage.style.transform=`translate(${sh3.x}px,${sh3.y}px)`;
+    scenes.s3.style.opacity = (t>9.25 ? 1-easeIn(P(t,9.3,0.28)) : 1);
+  } else {
+    document.querySelector('.vignette').style.opacity = t<6.9 ? 1 : 0.3;
+  }
+
+  /* ---------- S4: 9.5 - 19 ---------- */
+  if(t>=9.4&&t<19.3){
+    scenes.s4.style.opacity=1;
+    /* phone rises 9.5-10.2 */
+    const ph=P(t,9.5,0.7);
+    setT($('s4phone'),{y:lerp(900,0,expoOut(ph)), scale:lerp(0.85,1,expoOut(ph)), o:1});
+    $('s4phone').style.left='50%';
+    $('s4phone').style.transform=`translateX(-50%) translateY(${lerp(900,0,expoOut(ph))}px) scale(${lerp(0.85,1,expoOut(ph))})`;
+    /* live recorded frame */
+    const fi=clamp(Math.floor((t-9.5)*30),0,284);
+    $('s4img').src='assets/rec/rec_'+String(fi).padStart(5,'0')+'.png';
+    /* zoom keyframes: [time, scale, originX%, originY%] */
+    const K=[[9.5,1,50,93.9],[10.4,1,50,93.9],[11.4,2.0,86,97],[12.2,2.0,80,97],[14.0,2.0,50,97],
+             [14.5,1.42,50,88],[15.3,1.45,50,92],[19.0,1.52,50,88]];
+    let zq=[1,50,93.9];
+    for(let i=0;i<K.length-1;i++){
+      if(t>=K[i][0]&&t<=K[i+1][0]){
+        const p=easeInOut(P(t,K[i][0],K[i+1][0]-K[i][0]));
+        zq=[lerp(K[i][1],K[i+1][1],p),lerp(K[i][2],K[i+1][2],p),lerp(K[i][3],K[i+1][3],p)];
+        break;
+      }
+    }
+    if(t>K[K.length-1][0]) zq=[K[K.length-1][1],K[K.length-1][2],K[K.length-1][3]];
+    $('s4zoomwrap').style.transformOrigin=`${zq[1]}% ${zq[2]}%`;
+    $('s4zoomwrap').style.transform=`scale(${zq[0]})`;
+    /* glow ring pulse on hakeem button */
+    const gr=P(t,10.5,0.5);
+    const pulse=0.75+0.25*Math.sin((t-10.5)*7);
+    $('s4ring').style.opacity=t<10.5?0:(gr*pulse*(t<11.3?1:1-P(t,11.3,0.3)));
+    $('s4ring').style.transform=`translate(-50%,-50%) scale(${lerp(1.8,1,easeOut(gr))})`;
+    /* scrim hides prior chat content during typing */
+    $('s4scrim').style.opacity=P(t,11.4,0.35)*(1-P(t,15.0,0.35));
+    /* captions */
+    const c1=P(t,11.9,0.4);
+    setT($('cap1'),{y:lerp(-80,0,backOut(c1)), o:c1*(t<14.6?1:1-P(t,14.6,0.3))});
+    const c2=P(t,15.7,0.4);
+    setT($('cap2'),{y:lerp(-80,0,backOut(c2)), o:c2});
+    stage.style.transform='translate(0,0)';
+    scenes.s4.style.opacity = t>18.85 ? 1-easeIn(P(t,18.9,0.3)) : 1;
+  }
+
+  /* ---------- S5: 19 - 25 ---------- */
+  if(t>=18.9&&t<25.3){
+    scenes.s5.style.opacity=1;
+    const subs=[{el:'s5a',at:19.0},{el:'s5b',at:21.0},{el:'s5c',at:23.0}];
+    subs.forEach((s,i)=>{
+      const el=$(s.el);
+      const end = i<2 ? subs[i+1].at : 25.05;
+      const inP=P(t,s.at,0.45), outP=P(t,end-0.25,0.3);
+      const vis=t>=s.at-0.05&&t<end+0.1;
+      el.style.opacity=vis?(inP*(1-outP)):0;
+      if(vis){
+        const ph=el.querySelector('.phone');
+        ph.style.transform=`translateX(calc(-50% + ${lerp(-620,0,expoOut(inP))+lerp(0,640,easeIn(outP))}px)) rotate(${lerp(-5,0,expoOut(inP))}deg)`;
+        const band=el.querySelector('.band');
+        band.style.transform=`translateY(${lerp(-120,0,expoOut(P(t,s.at+0.1,0.4)))}px)`;
+        band.style.opacity=P(t,s.at+0.1,0.35)*(1-outP);
+      }
+    });
+    stage.style.transform='translate(0,0)';
+  }
+
+  /* ---------- S6: 25 - 30 ---------- */
+  if(t>=24.95){
+    scenes.s6.style.opacity=1;
+    const lg=P(t,25.1,0.5);
+    $('s6logow').style.transform=`translate(-50%,-50%) scale(${lerp(0.4,1,backOut(lg))})`;
+    $('s6logow').style.opacity=lg;
+    const ct=P(t,25.5,0.4);
+    setT($('s6cta'),{scale:lerp(1.8,1,expoOut(ct)), o:ct});
+    const bd=P(t,26.0,0.45);
+    setT($('s6badges'),{y:lerp(90,0,expoOut(bd)), o:bd});
+    const ur=P(t,26.4,0.4);
+    setT($('s6url'),{y:lerp(50,0,easeOut(ur)), o:ur});
+    /* hakeem enters then winks */
+    const hk=P(t,26.3,0.7);
+    const wb=P(t,28.3,0.8);
+    const sway=hk>=1?0.6*Math.sin((t-27)*1.2):0;
+    const rot=sway-3.2*Math.sin(Math.PI*wb);
+    $('hakwrap').style.transform=`translateY(${lerp(820,0,expoOut(hk))}px) rotate(${rot}deg) scale(${1+0.02*Math.sin(Math.PI*wb)})`;
+    const lid=$('haklid');
+    lid.style.left='315px'; lid.style.top='148px'; lid.style.width='51px'; lid.style.height='32px';
+    lid.style.background="url('assets/hakeem.png') no-repeat";
+    lid.style.backgroundSize='600px 780.8px';
+    lid.style.backgroundPosition='-315px -192px';
+    let lp=0;
+    if(t>=28.35&&t<28.75) lp=easeOut(P(t,28.35,0.15));
+    else if(t>=28.75) lp=1-easeIn(P(t,28.75,0.2));
+    lid.style.transform=`scaleY(${lp})`;
+    lid.style.opacity=lp>0?1:0;
+    const sp=P(t,28.45,0.3);
+    $('hakspark').style.left='370px'; $('hakspark').style.top='128px';
+    $('hakspark').style.transform=`scale(${lerp(0,1.25,backOut(sp))}) rotate(${lerp(0,40,sp)}deg)`;
+    $('hakspark').style.opacity=sp*(1-P(t,28.85,0.25));
+    /* final pulse */
+    const pl=P(t,29.0,0.9);
+    $('s6pulse').style.opacity=pl>0&&pl<1?0.7*(1-pl):0;
+    $('s6pulse').style.transform=`translate(-50%,-50%) scale(${lerp(0.4,3.4,easeOut(pl))})`;
+    /* cta heartbeat */
+    const hb=t>26.5?1+0.03*Math.sin((t-26.5)*4.2):1;
+    if(ct>=1) $('s6cta').style.transform=`scale(${hb})`;
+    const sh6=shake(t,25.15,12,40,9);
+    stage.style.transform=`translate(${sh6.x}px,${sh6.y}px)`;
+  }
+};
+window.READY = Promise.all([document.fonts.ready]);
+seek(0);
+</script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+﻿# transient render frames (regenerate with scenes/render.py)
+scenes/frames/
+scenes/keyframes/
+scenes/keyframes2/
+scenes/keyframes3/
+scenes/kf5/
+scenes/kf6/
+scenes/kf7/
+scenes/assets/rec/
+footage/thumb_*.png
+footage/t5_*.png
