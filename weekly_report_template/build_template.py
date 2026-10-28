@@ -127,6 +127,33 @@ EXAMPLE = {
     "sign": "إعداد: أحمد العتيبي        التوقيع: ______________        التاريخ: 29 / 10 / 2026",
 }
 
+# أسبوع ثانٍ تخيلي: يوضح زيادة العداد تلقائيًا وشكل «لا توجد تحديات» الهادئ
+EXAMPLE2 = dict(EXAMPLE, **{
+    "period": "من 1 إلى 5 نوفمبر 2026 (الأسبوع 45)",
+    "summary": "أُنجزت أتمتة تقارير الالتزام الأسبوعية قبل موعدها، واعتُمدت حقول تكامل الموارد البشرية رسميًا، "
+               "وتسير 3 مهام وفق الخطة. لا توجد قرارات مطلوبة هذا الأسبوع.",
+    "kpis": ("3", "3", "4"),
+    "done": [
+        ("أتمتة تقارير الالتزام الأسبوعية", "تعمل آليًا كل أحد؛ وفّرت نحو 6 ساعات عمل أسبوعيًا."),
+        ("اعتماد حقول تكامل الموارد البشرية", "اعتُمد 14 حقلًا مع إدارة الموارد البشرية بمحضر رسمي."),
+        ("إغلاق طلبات الوصول المعلّقة", "أُغلقت 6 من 6 طلبات خلال المدة المستهدفة."),
+    ],
+    "doing": [
+        ("تكامل بيانات الموارد البشرية مع مستودع البيانات", "65٪", "12 نوفمبر", "على المسار"),
+        ("تحديث دليل تصنيف البيانات", "55٪", "20 نوفمبر", "على المسار"),
+        ("إعداد عرض نتائج الربع للإدارة العليا", "40٪", "18 نوفمبر", "على المسار"),
+    ],
+    "next": [
+        "تشغيل اختبار التكامل الكامل مع الموارد البشرية (الأحد).",
+        "تسليم النسخة شبه النهائية لدليل التصنيف.",
+        "مراجعة عرض نتائج الربع مع المدير قبل الاعتماد.",
+        "جلسة تدريب قصيرة للفريق على لوحة المؤشرات (30 دقيقة).",
+    ],
+    "decision": "لا يوجد قرار مطلوب هذا الأسبوع.",
+    "challenges": "لا توجد تحديات هذا الأسبوع.",
+    "sign": "إعداد: أحمد العتيبي        التوقيع: ______________        التاريخ: 5 / 11 / 2026",
+})
+
 
 # ----------------------------------------------------------------------------
 # أدوات XML
@@ -679,7 +706,7 @@ def make_logo_png(path):
     return path
 
 
-def build(out, example=False, font=DEFAULT_FONT, palette=None, logo_png=None, body_font=None):
+def build(out, example=False, font=DEFAULT_FONT, palette=None, logo_png=None, body_font=None, weeks=1):
     global CONFIG
     CONFIG = {"font": font, "body_font": body_font or DEFAULT_BODY_FONT, "pal": dict(PALETTE, **(palette or {}))}
     prs = Presentation()
@@ -702,7 +729,11 @@ def build(out, example=False, font=DEFAULT_FONT, palette=None, logo_png=None, bo
     if example and not logo_png:
         import tempfile, os
         logo_png = make_logo_png(os.path.join(tempfile.gettempdir(), "sample_logo.png"))
-    add_report_slide(prs, report_layout, CONFIG, EXAMPLE if example else None, logo_png)
+    if example:
+        for ex in [EXAMPLE, EXAMPLE2][:max(1, weeks)]:
+            add_report_slide(prs, report_layout, CONFIG, ex, logo_png)
+    else:
+        add_report_slide(prs, report_layout, CONFIG, None, logo_png)
     add_guide_slide(prs, blank_layout, CONFIG)
     prs.save(out)
     return out
@@ -715,5 +746,6 @@ if __name__ == "__main__":
     ap.add_argument("--font", default=DEFAULT_FONT)
     ap.add_argument("--logo", default=None)
     ap.add_argument("--body-font", default=None, help='خط المتن (افتراضيًا IBM Plex Sans Arabic Medium)')
+    ap.add_argument("--weeks", type=int, default=1, help="عدد الأسابيع في المثال (1 أو 2)")
     a = ap.parse_args()
-    print(build(a.out, a.example, a.font, logo_png=a.logo, body_font=a.body_font))
+    print(build(a.out, a.example, a.font, logo_png=a.logo, body_font=a.body_font, weeks=a.weeks))
