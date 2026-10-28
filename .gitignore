@@ -9,3 +9,11 @@ scenes/kf7/
 scenes/assets/rec/
 footage/thumb_*.png
 footage/t5_*.png
+
+# weekly report template: transient QA renders and font-variant trials
+weekly_report_template/out/variants/
+weekly_report_template/out/guide_qa/
+weekly_report_template/out/ex-*.png
+weekly_report_template/out/tpl-*.png
+weekly_report_template/node_modules/
+weekly_report_template/package*.json
