@@ -35,21 +35,27 @@ PAGE_W, PAGE_H = 210, 297
 NS = nsdecls("a", "p", "r")
 
 DEFAULT_FONT = "IBM Plex Sans Arabic"
+DEFAULT_BODY_FONT = "IBM Plex Sans Arabic Medium"  # وزن أثقل قليلًا للمتن: أوضح على الهاتف (يُستبدل تلقائيًا إن لم يُثبّت)
 
 # لوحة الألوان (مستوحاة من هوية سدايا: كحلي داكن + تدرج تركوازي/أخضر) — تُضبط من CONFIG
 PALETTE = {
-    "navy": "0B1F3F",        # لوحة الترويسة
-    "navy2": "14315E",       # تدرج ثانٍ للترويسة
-    "ink": "1C2B3A",         # نص أساسي
+    # الألوان الأساسية مأخوذة من ملف شعار سدايا (SVG) ومن موقعها: كحلي #273470، نعناعي #33CC99، ليموني #99D633،
+    # بنفسجي #6459A7، سماوي #66CCFF، تركوازي الموقع #0E8A8A. الباقي درجات مشتقة للنص والخلفيات.
+    "navy": "273470",        # لوحة الترويسة (كحلي سدايا)
+    "navy2": "1B2452",       # نهاية تدرج الترويسة (أغمق)
+    "ink": "1F2A37",         # نص أساسي
     "muted": "5F6B7A",       # نص ثانوي
-    "faint": "8A95A3",       # نص خافت جدًا (التذييل)
-    "rule": "D9DEE5",        # خطوط الجدول
-    "teal": "12A5A8",        # اللون المميز A
-    "teal_dark": "0E7C86",   # عناوين على خلفية فاتحة
-    "green": "6CC04A",       # اللون المميز B (منجز)
-    "amber": "D98B1F",       # متأخر/خطر (للمستخدم عند الحاجة)
-    "tint_navy": "EEF2F8",   # خلفية بطاقات الأرقام
-    "tint_teal": "E6F5F5",   # صندوق القرار المطلوب
+    "faint": "6C727E",       # نص التذييل
+    "rule": "DDE1E8",        # خطوط الجدول والفواصل
+    "mint": "33CC99",        # أخضر نعناعي (أيقونات/تدرج/عناوين على الكحلي)
+    "lime": "99D633",        # ليموني (نهاية التدرج)
+    "sky": "66CCFF",         # سماوي (زخرفة على الكحلي)
+    "purple": "6459A7",      # بنفسجي سدايا (قسم «القادم»)
+    "teal_dark": "0E8A8A",   # تركوازي الموقع — تسميات على الأبيض
+    "green_text": "178F6B",  # أخضر داكن للأرقام/النص على الأبيض (تباين كافٍ)
+    "amber": "DC6803",       # تنبيه/تأخر (للمستخدم عند الحاجة)
+    "tint_navy": "EEF0F8",   # خلفية بطاقات الأرقام
+    "tint_mint": "E8F7F1",   # صندوق القرار المطلوب
     "tint_gray": "F4F5F7",   # صندوق التحديات (هادئ)
     "white": "FFFFFF",
 }
@@ -152,6 +158,11 @@ def grad(c1, c2, ang=0):
             f'<a:gs pos="100000"><a:srgbClr val="{c2}"/></a:gs></a:gsLst><a:lin ang="{ang * 60000}" scaled="0"/></a:gradFill>')
 
 
+def BODY():
+    """خط المتن (قد يكون وزن Medium لتحسين القراءة على الهاتف)."""
+    return CONFIG.get("body_font") or CONFIG["font"]
+
+
 def rpr(sz, color, bold=False, font=None, alpha=None, lang="ar-SA", tag="a:rPr"):
     font = font or CONFIG["font"]
     b = ' b="1"' if bold else ""
@@ -174,7 +185,7 @@ def ppr(algn="r", rtl=True, ln=None, after=None, before=None, bullet=None, marL=
     if after is not None:
         s += f'<a:spcAft><a:spcPts val="{pt(after)}"/></a:spcAft>'
     if bullet:
-        s += f'<a:buClr><a:srgbClr val="{bullet_color or CONFIG["pal"]["teal"]}"/></a:buClr>'
+        s += f'<a:buClr><a:srgbClr val="{bullet_color or CONFIG["pal"]["mint"]}"/></a:buClr>'
         s += f'<a:buSzPct val="110000"/><a:buFont typeface="Arial" pitchFamily="34" charset="0"/><a:buChar char="{bullet}"/>'
     else:
         s += "<a:buNone/>"
@@ -295,12 +306,12 @@ def table(ids, name, x, y, w, col_mm, header, rows, hdr_h, row_h, sz_hdr, sz_bod
     col_mm = list(reversed(col_mm)); header = list(reversed(header)); rows = [list(reversed(r)) for r in rows]
     grid = "".join(f'<a:gridCol w="{E(c)}"/>' for c in col_mm)
     aligns = ["ctr", "ctr", "ctr", "r"]
-    hdr = "".join(table_cell(t, sz_hdr, pal["navy"], True, fill=pal["tint_navy"], algn=a, bottom=pal["teal"])
+    hdr = "".join(table_cell(t, sz_hdr, pal["navy"], True, fill=pal["tint_navy"], algn=a, bottom=pal["mint"])
                   for t, a in zip(header, aligns))
     body = ""
     for r in rows:
         body += f'<a:tr h="{E(row_h)}">' + "".join(
-            table_cell(t, sz_body, pal["ink"] if i == 3 else pal["muted"], False, algn=a, bottom=pal["rule"])
+            table_cell(t, sz_body, pal["ink"] if i == 3 else pal["muted"], False, algn=a, bottom=pal["rule"], font=BODY())
             for i, (t, a) in enumerate(zip(r, aligns))) + "</a:tr>"
     h = hdr_h + row_h * len(rows)
     return parse_xml(
@@ -317,10 +328,10 @@ def counter_box(ids, x, y, w, h):
     pal = CONFIG["pal"]
     font = CONFIG["font"]
     p = (f'<a:p>{ppr(algn="ctr", rtl=True)}'
-         f'{run(TXT["counter_label"] + "  ", 9.5, "FFFFFF", False, alpha=88)}'
+         f'{run(TXT["counter_label"] + "  ", 9.5, pal["navy"], True)}'
          f'<a:fld id="{{B6F15528-21DE-4FAA-801E-634DDDAF4B2B}}" type="slidenum">'
-         f'{rpr(22, "FFFFFF", True, font, lang="en-US")}<a:t>1</a:t></a:fld></a:p>')
-    return shape(ids, "عداد التقرير", x, y, w, h, grad_fill=grad(pal["teal"], pal["green"], 0),
+         f'{rpr(22, pal["navy"], True, font, lang="en-US")}<a:t>1</a:t></a:fld></a:p>')
+    return shape(ids, "عداد التقرير", x, y, w, h, grad_fill=grad(pal["mint"], pal["lime"], 0),
                  geom="roundRect", adj=30000, text_xml=p, body=body_pr("ctr", (1, 0, 1, 0), None), txbox=True)
 
 
@@ -371,7 +382,7 @@ def build_layout(layout, cfg):
     HEADER_H = 46
     els.append(shape(ids, "لوحة الترويسة", 0, 0, PAGE_W, HEADER_H, grad_fill=grad(pal["navy"], pal["navy2"], 20)))
     # زخرفة شبكية خفيفة (يسار الترويسة)
-    els += network_motif(ids, 48, 3, 46, 24, pal["teal"], alpha_line=35, alpha_node=60)
+    els += network_motif(ids, 48, 3, 46, 24, pal["sky"], alpha_line=38, alpha_node=65)
     # الشعار (يمين أعلى)
     els.append(pic_placeholder(ids, "الشعار", 40, MR - 22, 8, 22, 22, TXT["logo_prompt"]))
     # اسم الجهة + العنوان
@@ -388,8 +399,8 @@ def build_layout(layout, cfg):
     for i, (cap, idx, prompt) in enumerate(caps):
         xr = MR - i * (col_w + 4)
         x = xr - col_w
-        els.append(textbox(ids, f"تسمية: {cap}", x, 30.5, col_w, 4,
-                           [para(run(cap, 7.5, pal["teal"], True), algn="r")], anchor="b"))
+        els.append(textbox(ids, f"تسمية: {cap}", x, 30, col_w, 4.5,
+                           [para(run(cap, 8.5, pal["mint"], True), algn="r")], anchor="b"))
         els.append(placeholder(ids, cap, idx, x, 35, col_w, 7.5, prompt, 10, "FFFFFF", algn="r", ln=1.1, after=0,
                                anchor="t", lvl2=False))
 
@@ -400,7 +411,7 @@ def build_layout(layout, cfg):
     els.append(placeholder(ids, "خلاصة الأسبوع", 20, 80, y + 6, MR - 80, 24, TXT["summary_prompt"], 12.5, pal["ink"],
                            ln=1.32, after=0, lvl2=False))
     # بطاقات الأرقام (ثلاث) — من اليمين: منجزة، جارية، قادمة
-    tiles = [(TXT["kpi_done"], 21, pal["green"]), (TXT["kpi_doing"], 22, pal["teal"]), (TXT["kpi_next"], 23, pal["navy"])]
+    tiles = [(TXT["kpi_done"], 21, pal["green_text"]), (TXT["kpi_doing"], 22, pal["teal_dark"]), (TXT["kpi_next"], 23, pal["purple"])]
     tw, th, gap = 20, 27, 2.5
     x_right_tiles = 80 - 6  # 74
     for i, (label, idx, color) in enumerate(tiles):
@@ -410,23 +421,23 @@ def build_layout(layout, cfg):
         els.append(placeholder(ids, f"عدد {label}", idx, x, y + 4.5, tw, 14, TXT["kpi_prompt"], 22, color, bold=True,
                                algn="ctr", ln=1.0, after=0, anchor="ctr", autofit=None, lvl2=False, font=cfg["font"]))
         els.append(textbox(ids, f"تسمية {label}", x, y + 19.5, tw, 8,
-                           [para(run(label, 8, pal["muted"], False), algn="ctr", ln=1.0)], anchor="t"))
+                           [para(run(label, 8.5, pal["muted"], False), algn="ctr", ln=1.0)], anchor="t"))
 
     # --- المهام المنجزة ---
     y = 91
-    els += section_header(ids, TXT["sec_done"], MR, y, pal["green"])
-    els.append(placeholder(ids, "المهام المنجزة", 24, ML, y + 8, MR - ML, 42, TXT["done_prompt"], 12, pal["ink"],
-                           bullet="•", bullet_color=pal["green"], ln=1.28, after=2.5))
+    els += section_header(ids, TXT["sec_done"], MR, y, pal["mint"])
+    els.append(placeholder(ids, "المهام المنجزة", 24, ML, y + 8, MR - ML, 40, TXT["done_prompt"], 12, pal["ink"],
+                           bullet="•", bullet_color=pal["mint"], ln=1.28, after=2.5, font=BODY()))
 
     # --- المهام الجارية (الجدول يُضاف على الشريحة) ---
-    y = 146
-    els += section_header(ids, TXT["sec_doing"], MR, y, pal["teal"])
+    y = 145
+    els += section_header(ids, TXT["sec_doing"], MR, y, pal["teal_dark"])
 
     # --- خطة الأسبوع القادم ---
-    y = 199.5
-    els += section_header(ids, TXT["sec_next"], MR, y, pal["navy"])
-    els.append(placeholder(ids, "خطة الأسبوع القادم", 25, ML, y + 7.5, MR - ML, 33, TXT["next_prompt"], 12, pal["ink"],
-                           bullet="•", bullet_color=pal["navy"], ln=1.28, after=2.5))
+    y = 200
+    els += section_header(ids, TXT["sec_next"], MR, y, pal["purple"])
+    els.append(placeholder(ids, "خطة الأسبوع القادم", 25, ML, y + 7.5, MR - ML, 32.5, TXT["next_prompt"], 12, pal["ink"],
+                           bullet="•", bullet_color=pal["purple"], ln=1.28, after=2.5, font=BODY()))
 
     # --- القرار المطلوب (يمين) + التحديات (يسار، هادئ) ---
     y = 245
@@ -435,24 +446,24 @@ def build_layout(layout, cfg):
     wd = 96   # صندوق القرار
     wc = MR - ML - wd - gapb  # 85
     xd = MR - wd
-    els.append(shape(ids, "صندوق القرار", xd, y, wd, bh, fill=pal["tint_teal"], geom="roundRect", adj=6000))
+    els.append(shape(ids, "صندوق القرار", xd, y, wd, bh, fill=pal["tint_mint"], geom="roundRect", adj=6000))
     els.append(textbox(ids, "تسمية القرار", xd + 4, y + 2.5, wd - 8, 5.5,
                        [para(run(TXT["decision_cap"], 10.5, pal["teal_dark"], True), algn="r")], anchor="ctr"))
     els.append(placeholder(ids, "القرار المطلوب", 26, xd + 4, y + 9, wd - 8, bh - 11, TXT["decision_prompt"], 11,
-                           pal["ink"], ln=1.25, after=0, lvl2=False))
+                           pal["ink"], ln=1.25, after=0, lvl2=False, font=BODY()))
     els.append(shape(ids, "صندوق التحديات", ML, y, wc, bh, fill=pal["tint_gray"], geom="roundRect", adj=6000))
     els.append(textbox(ids, "تسمية التحديات", ML + 4, y + 2.5, wc - 8, 5.5,
                        [para(run(TXT["challenges_cap"], 9.5, pal["muted"], True), algn="r")], anchor="ctr"))
-    els.append(placeholder(ids, "التحديات", 27, ML + 4, y + 9, wc - 8, bh - 11, TXT["challenges_prompt"], 10,
-                           pal["muted"], ln=1.25, after=0, lvl2=False))
+    els.append(placeholder(ids, "التحديات", 27, ML + 4, y + 9, wc - 8, bh - 11, TXT["challenges_prompt"], 10.5,
+                           pal["muted"], ln=1.25, after=0, lvl2=False, font=BODY()))
 
     # --- التذييل والتوقيع ---
     y = 280.5
     els.append(line(ids, "فاصل التذييل", ML, y, MR, y, pal["rule"], 0.5))
-    els.append(placeholder(ids, "التوقيع", 28, 70, y + 2, MR - 70, 7, TXT["sign_prompt"], 9, pal["muted"],
+    els.append(placeholder(ids, "التوقيع", 28, 70, y + 2, MR - 70, 7, TXT["sign_prompt"], 9.5, pal["muted"],
                            ln=1.1, after=0, anchor="ctr", lvl2=False))
     els.append(textbox(ids, "نص التذييل الثابت", ML, y + 2, 55, 7,
-                       [para(run(TXT["footer_fixed"], 7, pal["faint"]), algn="l", rtl=True)], anchor="ctr"))
+                       [para(run(TXT["footer_fixed"], 8, pal["faint"]), algn="l", rtl=True)], anchor="ctr"))
 
     for el in els:
         tree.append(el)
@@ -493,7 +504,7 @@ def add_report_slide(prs, layout, cfg, example=None, logo_png=None):
     rows = example["doing"] if example else [("", "", "", "")] * 4
     if example and len(rows) < 4:
         rows = list(rows) + [("", "", "", "")] * (4 - len(rows))
-    tree.append(table(ids, "جدول المهام الجارية", 12, 154, 186, cols, header, rows, hdr_h=7.5, row_h=8,
+    tree.append(table(ids, "جدول المهام الجارية", 12, 152, 186, cols, header, rows, hdr_h=7.5, row_h=8.5,
                       sz_hdr=9.5, sz_body=11))
 
     # ملاحظات المتحدث: دليل مختصر
@@ -512,7 +523,8 @@ def set_runs(sp, items, bold_lead=False):
     for it in items:
         if isinstance(it, tuple):
             lead, rest = it
-            runs = (f'<a:r><a:rPr lang="ar-SA" b="1" dirty="0"/><a:t>{escape(lead)}</a:t></a:r>'
+            f = CONFIG["font"]  # الوزن العريض الحقيقي من العائلة الأساسية
+            runs = (f'<a:r><a:rPr lang="ar-SA" b="1" dirty="0"><a:latin typeface="{f}"/><a:cs typeface="{f}"/></a:rPr><a:t>{escape(lead)}</a:t></a:r>'
                     f'<a:r><a:rPr lang="ar-SA" dirty="0"/><a:t>{escape(" — " + rest)}</a:t></a:r>')
         else:
             runs = f'<a:r><a:rPr lang="ar-SA" dirty="0"/><a:t>{escape(it)}</a:t></a:r>'
@@ -569,7 +581,7 @@ def add_guide_slide(prs, blank_layout, cfg):
     tree.append(textbox(ids, "عنوان الدليل", 12, 8, 186, 10,
                         [para(run("دليل استخدام القالب", 20, "FFFFFF", True), algn="r")], anchor="ctr"))
     tree.append(textbox(ids, "تنبيه", 12, 19, 186, 8,
-                        [para(run("هذه الشريحة مخفية: لا تظهر في العرض ولا في الطباعة ولا في ملف PDF.", 10.5, pal["green"], False), algn="r")],
+                        [para(run("هذه الشريحة مخفية: لا تظهر في العرض ولا في الطباعة ولا في ملف PDF.", 10.5, pal["mint"], False), algn="r")],
                         anchor="ctr"))
     y = 42
     for i, (head, body) in enumerate(GUIDE):
@@ -579,7 +591,7 @@ def add_guide_slide(prs, blank_layout, cfg):
             y += 10
             continue
         n = i  # رقم الخطوة
-        tree.append(shape(ids, "رقم الخطوة", 190, y + 0.8, 7, 7, fill=pal["teal"], geom="ellipse",
+        tree.append(shape(ids, "رقم الخطوة", 190, y + 0.8, 7, 7, fill=pal["teal_dark"], geom="ellipse",
                           text_xml=para(run(str(n), 9, "FFFFFF", True, lang="en-US"), algn="ctr", rtl=False),
                           body=body_pr("ctr", (0, 0, 0, 0), None), txbox=True))
         tree.append(textbox(ids, f"دليل: {head}", 12, y, 174, 7,
@@ -614,9 +626,9 @@ def patch_theme(prs, cfg):
     pal = cfg["pal"]
     scheme = root.find(f".//{a}clrScheme")
     scheme.set("name", "SDAIA-inspired")
-    mapping = {"dk1": pal["ink"], "lt1": "FFFFFF", "dk2": pal["navy"], "lt2": pal["tint_navy"], "accent1": pal["teal"],
-               "accent2": pal["green"], "accent3": pal["navy2"], "accent4": pal["amber"], "accent5": pal["teal_dark"],
-               "accent6": pal["muted"], "hlink": pal["teal_dark"], "folHlink": pal["muted"]}
+    mapping = {"dk1": pal["ink"], "lt1": "FFFFFF", "dk2": pal["navy"], "lt2": pal["tint_navy"], "accent1": pal["mint"],
+               "accent2": pal["purple"], "accent3": pal["teal_dark"], "accent4": pal["lime"], "accent5": pal["sky"],
+               "accent6": pal["amber"], "hlink": pal["teal_dark"], "folHlink": pal["purple"]}
     for k, v in mapping.items():
         el = scheme.find(f"{a}{k}")
         for c in list(el):
@@ -667,9 +679,9 @@ def make_logo_png(path):
     return path
 
 
-def build(out, example=False, font=DEFAULT_FONT, palette=None, logo_png=None):
+def build(out, example=False, font=DEFAULT_FONT, palette=None, logo_png=None, body_font=None):
     global CONFIG
-    CONFIG = {"font": font, "pal": dict(PALETTE, **(palette or {}))}
+    CONFIG = {"font": font, "body_font": body_font or DEFAULT_BODY_FONT, "pal": dict(PALETTE, **(palette or {}))}
     prs = Presentation()
     prs.slide_width = Emu(E(PAGE_W))
     prs.slide_height = Emu(E(PAGE_H))
@@ -702,5 +714,6 @@ if __name__ == "__main__":
     ap.add_argument("--example", action="store_true", help="نسخة معبأة ببيانات تجريبية")
     ap.add_argument("--font", default=DEFAULT_FONT)
     ap.add_argument("--logo", default=None)
+    ap.add_argument("--body-font", default=None, help='خط المتن (افتراضيًا IBM Plex Sans Arabic Medium)')
     a = ap.parse_args()
-    print(build(a.out, a.example, a.font, logo_png=a.logo))
+    print(build(a.out, a.example, a.font, logo_png=a.logo, body_font=a.body_font))
