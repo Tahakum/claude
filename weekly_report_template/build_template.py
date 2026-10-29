@@ -74,6 +74,9 @@ TXT = {
     "author_cap": "إعداد",
     "to_cap": "مقدَّم إلى",
     "period_prompt": "من … إلى … (الأسبوع …)",
+    "period_from_cap": "من",
+    "period_to_cap": "إلى",
+    "date_prompt": "التاريخ",
     "author_prompt": "الاسم — المسمى الوظيفي",
     "to_prompt": "اسم المدير — المسمى الوظيفي",
     "summary_cap": "خلاصة الأسبوع",
@@ -108,10 +111,14 @@ TXT = {
 EXAMPLE = {
     "entity": "الإدارة العامة للتحول الرقمي — إدارة البيانات والتحليلات",
     "period": "من 25 إلى 29 أكتوبر 2026 (الأسبوع 44)",
+    "period_from": "25 أكتوبر 2026",
+    "period_to": "29 أكتوبر 2026",
     "author": "أحمد العتيبي — محلل بيانات أول",
     "to": "م. خالد القحطاني — مدير إدارة البيانات",
     "summary": "أُطلقت لوحة مؤشرات الأداء واعتمدتها 3 إدارات، وأُنجزت 4 مهام. مهمتان ضمن الجدول، ومهمة "
                "(تكامل الموارد البشرية) متأخرة أسبوعًا. مطلوب قرار واحد قبل 2 نوفمبر (أدناه).",
+    "summary_compact": "أُطلقت لوحة مؤشرات الأداء واعتمدتها 3 إدارات، وأُنجزت 4 مهام. مهمتان ضمن الجدول، ومهمة "
+                       "(تكامل الموارد البشرية) متأخرة أسبوعًا بسبب تأخر استلام البيانات، والموعد الجديد 9 نوفمبر.",
     "kpis": ("4", "3", "4"),
     "done": [
         ("إطلاق لوحة مؤشرات الأداء", "نُشرت على بيئة الإنتاج واعتمدتها 3 إدارات."),
@@ -144,8 +151,12 @@ EXAMPLE = {
 # أسبوع ثانٍ تخيلي: يوضح زيادة العداد تلقائيًا وشكل «لا توجد تحديات» الهادئ
 EXAMPLE2 = dict(EXAMPLE, **{
     "period": "من 1 إلى 5 نوفمبر 2026 (الأسبوع 45)",
+    "period_from": "1 نوفمبر 2026",
+    "period_to": "5 نوفمبر 2026",
     "summary": "اكتملت أتمتة تقارير الالتزام قبل موعدها واعتُمدت حقول تكامل الموارد البشرية رسميًا؛ 3 مهام منجزة. "
                "تسير المهام الثلاث الجارية ضمن الجدول، ولا يوجد قرار مطلوب هذا الأسبوع.",
+    "summary_compact": "اكتملت أتمتة تقارير الالتزام قبل موعدها واعتُمدت حقول تكامل الموارد البشرية رسميًا؛ 3 مهام منجزة، "
+                       "وتسير المهام الثلاث الجارية ضمن الجدول دون تحديات.",
     "kpis": ("3", "3", "4"),
     "done": [
         ("أتمتة تقارير الالتزام الأسبوعية", "تعمل آليًا كل أحد؛ وفّرت نحو 6 ساعات عمل أسبوعيًا."),
@@ -171,11 +182,11 @@ EXAMPLE2 = dict(EXAMPLE, **{
 # معرّفات الحقول (idx) — بعيدة عن 10–12 المحجوزة للتاريخ/التذييل/رقم الشريحة
 IDX = {"entity": 101, "period": 102, "author": 103, "to": 104, "summary": 105, "kpi_done": 106, "kpi_doing": 107,
        "kpi_next": 108, "done": 109, "next": 110, "decision": 111, "challenges": 112, "sign_name": 113,
-       "sign_date": 114, "logo": 120}
+       "sign_date": 114, "period_from": 115, "period_to": 116, "logo": 120}
 PH_NAMES = {101: "اسم الجهة", 102: "الفترة", 103: "إعداد", 104: "مقدَّم إلى", 105: "خلاصة الأسبوع",
             106: "عدد المهام المنجزة", 107: "عدد المهام الجارية", 108: "عدد المهام المقبلة", 109: "المهام المنجزة",
             110: "خطة الأسبوع المقبل", 111: "القرار المطلوب", 112: "التحديات", 113: "اسم المُعِد", 114: "تاريخ التوقيع",
-            120: "الشعار"}
+            115: "الفترة — من", 116: "الفترة — إلى", 120: "الشعار"}
 CENTERED = {106, 107, 108}
 
 
@@ -443,9 +454,13 @@ def section_header(ids, title, y, color, w=130):
 
 
 # الميزانية الرأسية (مم) — محسوبة على مقاييس PowerPoint (ارتفاع سطر IBM Plex Arabic ≈ 1.73 من حجم الخط)
-Y = dict(header_h=46, summary=52, done_hdr=90, done_list=97.5, done_h=38, doing_hdr=141, table=148.5,
-         next_hdr=198, next_list=205.5, next_h=38, boxes=247, box_h=30, footer_rule=281.5, footer=283.5)
-TABLE_COLS = [90, 24, 34, 38]  # المهمة، النسبة، الموعد، الحالة
+Y_FULL = dict(header_h=46, summary=52, done_hdr=90, done_list=97.5, done_h=38, doing_hdr=141, table=148.5,
+              next_hdr=198, next_list=205.5, next_h=38, boxes=247, box_h=30, footer_rule=281.5, footer=283.5, table_rows=4)
+# النسخة المختصرة: بلا خطة الأسبوع المقبل ولا صندوق القرار ولا التذييل؛ مساحة أكبر للمنجز والجدول
+Y_COMPACT = dict(header_h=46, summary=52, done_hdr=92, done_list=99.5, done_h=52, doing_hdr=158, table=165.5,
+                 boxes=237, box_h=30, table_rows=6)
+Y = Y_FULL
+TABLE_COLS = [88, 30, 32, 36]  # المهمة، النسبة، الموعد، الحالة
 TABLE_HDR_H, TABLE_ROW_H = 7.5, 9.0
 
 
@@ -469,28 +484,48 @@ def build_layout(layout, cfg):
                            algn="r", ln=1.0, after=0, anchor="ctr", font=BODY()))
     els.append(textbox(ids, "عنوان التقرير", 80, 20, MR - 80, 11.5,
                        [para(run(TXT["title"], 22, "FFFFFF", True), algn="r", ln=1.0, after=0)], anchor="ctr"))
-    caps = [(TXT["period_cap"], IDX["period"], TXT["period_prompt"]), (TXT["author_cap"], IDX["author"], TXT["author_prompt"]),
-            (TXT["to_cap"], IDX["to"], TXT["to_prompt"])]
-    col_w = (MR - ML - 2 * 4) / 3
-    for i, (cap, idx, prompt) in enumerate(caps):
-        xr = MR - i * (col_w + 4)
-        x = xr - col_w
-        els.append(textbox(ids, f"تسمية: {cap}", x, 32, col_w, 4.5,
+    if cfg["compact"]:  # الفترة = من [تاريخ] إلى [تاريخ]
+        cols = [(TXT["period_cap"], None, None, 64), (TXT["author_cap"], IDX["author"], TXT["author_prompt"], 57),
+                (TXT["to_cap"], IDX["to"], TXT["to_prompt"], 57)]
+    else:
+        w3 = (MR - ML - 2 * 4) / 3
+        cols = [(TXT["period_cap"], IDX["period"], TXT["period_prompt"], w3),
+                (TXT["author_cap"], IDX["author"], TXT["author_prompt"], w3), (TXT["to_cap"], IDX["to"], TXT["to_prompt"], w3)]
+    xr = MR
+    for cap, idx, prompt, w in cols:
+        x = xr - w
+        els.append(textbox(ids, f"تسمية: {cap}", x, 32, w, 4.5,
                            [para(run(cap, 9, pal["mint"], True), algn="r", ln=1.0, after=0)], anchor="b"))
-        els.append(placeholder(ids, cap, idx, x, 36.5, col_w, 7.5, prompt, 10.5, "FFFFFF", algn="r", ln=1.0, after=0,
-                               anchor="t", font=BODY()))
+        if idx is None:
+            lw, dw = 6.5, 23.5
+            xx = xr
+            for lab_txt, pidx in ((TXT["period_from_cap"], IDX["period_from"]), (TXT["period_to_cap"], IDX["period_to"])):
+                els.append(textbox(ids, f"تسمية {lab_txt}", xx - lw, 36.5, lw, 7.5,
+                                   [para(run(lab_txt, 10.5, pal["mint"], True), algn="r", ln=1.0, after=0)], anchor="t"))
+                xx -= lw + 1
+                els.append(placeholder(ids, f"الفترة {lab_txt}", pidx, xx - dw, 36.5, dw, 7.5, TXT["date_prompt"], 10.5,
+                                       "FFFFFF", algn="r", ln=1.0, after=0, anchor="t", font=BODY()))
+                xx -= dw + 2
+        else:
+            els.append(placeholder(ids, cap, idx, x, 36.5, w, 7.5, prompt, 10.5, "FFFFFF", algn="r", ln=1.0, after=0,
+                                   anchor="t", font=BODY()))
+        xr = x - 4
 
     # --- خلاصة الأسبوع + بطاقات الأرقام ---
     y = Y["summary"]
-    els.append(textbox(ids, "تسمية الخلاصة", 83, y, MR - 83, 5,
-                       [para(run(TXT["summary_cap"], 9.5, pal["teal_dark"], True), algn="r", ln=1.0, after=0)], anchor="b"))
-    els.append(placeholder(ids, "خلاصة الأسبوع", IDX["summary"], 83, y + 5.5, MR - 83, 26.5, TXT["summary_prompt"], 12,
-                           pal["ink"], ln=1.0, after=0, font=BODY()))
     tiles = [(TXT["kpi_done"], IDX["kpi_done"], pal["green_text"]), (TXT["kpi_doing"], IDX["kpi_doing"], pal["teal_dark"]),
              (TXT["kpi_next"], IDX["kpi_next"], pal["purple"])]
     tw, th, gap = 19, 32, 4
+    if cfg["compact"]:  # بطاقتان فقط (لا قسم للمهام المقبلة)
+        tiles, tw = tiles[:2], 24
+    tiles_right = ML + len(tiles) * tw + (len(tiles) - 1) * gap
+    sx = tiles_right + 6
+    els.append(textbox(ids, "تسمية الخلاصة", sx, y, MR - sx, 5,
+                       [para(run(TXT["summary_cap"], 9.5, pal["teal_dark"], True), algn="r", ln=1.0, after=0)], anchor="b"))
+    els.append(placeholder(ids, "خلاصة الأسبوع", IDX["summary"], sx, y + 5.5, MR - sx, 26.5, TXT["summary_prompt"], 12,
+                           pal["ink"], ln=1.0, after=0, font=BODY()))
     for i, (label, idx, color) in enumerate(tiles):
-        x = 77 - tw - i * (tw + gap)
+        x = tiles_right - tw - i * (tw + gap)
         els.append(shape(ids, f"بطاقة {label}", x, y, tw, th, fill=pal["tint_navy"], line=pal["edge"], line_w=0.5,
                          geom="roundRect", adj=8000))
         els.append(placeholder(ids, f"عدد {label}", idx, x, y + 2, tw, 19, TXT["kpi_prompt"], 24, color, bold=True,
@@ -506,27 +541,38 @@ def build_layout(layout, cfg):
     # --- المهام الجارية (الجدول يُضاف على الشريحة) ---
     els += section_header(ids, TXT["sec_doing"], Y["doing_hdr"], pal["teal_dark"])
 
-    # --- خطة الأسبوع المقبل ---
-    els += section_header(ids, TXT["sec_next"], Y["next_hdr"], pal["purple"])
-    els.append(placeholder(ids, "خطة الأسبوع المقبل", IDX["next"], ML, Y["next_list"], MR - ML, Y["next_h"], TXT["next_prompt"],
-                           11, pal["ink"], bullet="•", bullet_color=pal["purple"], ln=1.0, after=2, font=BODY()))
+    if not cfg["compact"]:
+        # --- خطة الأسبوع المقبل ---
+        els += section_header(ids, TXT["sec_next"], Y["next_hdr"], pal["purple"])
+        els.append(placeholder(ids, "خطة الأسبوع المقبل", IDX["next"], ML, Y["next_list"], MR - ML, Y["next_h"],
+                               TXT["next_prompt"], 11, pal["ink"], bullet="•", bullet_color=pal["purple"], ln=1.0, after=2,
+                               font=BODY()))
 
     # --- القرار المطلوب (يمين) + التحديات (يسار، هادئ) ---
-    y, bh, gapb, wd = Y["boxes"], Y["box_h"], 4, 95
-    wc = MR - ML - wd - gapb
-    xd = MR - wd
-    els.append(shape(ids, "صندوق القرار", xd, y, wd, bh, fill=pal["tint_mint"], line=pal["teal_dark"], line_w=0.75,
-                     geom="roundRect", adj=5000))
-    els.append(textbox(ids, "تسمية القرار", xd + 4, y + 2, wd - 8, 6.5,
-                       [para(run(TXT["decision_cap"], 12, pal["teal_dark"], True), algn="r", ln=1.0, after=0)], anchor="ctr"))
-    els.append(placeholder(ids, "القرار المطلوب", IDX["decision"], xd + 4, y + 9.5, wd - 8, bh - 11.5, TXT["decision_prompt"],
-                           11.5, pal["ink"], ln=1.0, after=0, font=BODY()))
+    y, bh = Y["boxes"], Y["box_h"]
+    if cfg["compact"]:
+        wc = MR - ML
+    else:
+        gapb, wd = 4, 95
+        wc = MR - ML - wd - gapb
+        xd = MR - wd
+        els.append(shape(ids, "صندوق القرار", xd, y, wd, bh, fill=pal["tint_mint"], line=pal["teal_dark"], line_w=0.75,
+                         geom="roundRect", adj=5000))
+        els.append(textbox(ids, "تسمية القرار", xd + 4, y + 2, wd - 8, 6.5,
+                           [para(run(TXT["decision_cap"], 12, pal["teal_dark"], True), algn="r", ln=1.0, after=0)], anchor="ctr"))
+        els.append(placeholder(ids, "القرار المطلوب", IDX["decision"], xd + 4, y + 9.5, wd - 8, bh - 11.5,
+                               TXT["decision_prompt"], 11.5, pal["ink"], ln=1.0, after=0, font=BODY()))
     els.append(shape(ids, "صندوق التحديات", ML, y, wc, bh, fill=pal["tint_gray"], line=pal["edge"], line_w=0.5,
                      geom="roundRect", adj=5000))
     els.append(textbox(ids, "تسمية التحديات", ML + 4, y + 2, wc - 8, 6.5,
                        [para(run(TXT["challenges_cap"], 10, pal["muted"], True), algn="r", ln=1.0, after=0)], anchor="ctr"))
     els.append(placeholder(ids, "التحديات", IDX["challenges"], ML + 4, y + 9.5, wc - 8, bh - 11.5, TXT["challenges_prompt"],
                            10.5, pal["quiet"], ln=1.0, after=0, font=BODY()))
+
+    if cfg["compact"]:
+        for el in els:
+            tree.append(el)
+        return
 
     # --- التذييل: توقيع ثابت (يُطبع حتى في النموذج الفارغ) ---
     y = Y["footer_rule"]
@@ -571,7 +617,7 @@ def add_report_slide(prs, layout, cfg, example=None, logo_png=None):
                                 f'<a:endParaRPr lang="ar-SA" dirty="0"/></a:p>'))
     ids = ids_from_tree(slide.shapes._spTree)
     header = [TXT["tbl_task"], TXT["tbl_pct"], TXT["tbl_due"], TXT["tbl_status"]]
-    rows = list(example["doing"]) if example else [("", "", "", "")] * 4
+    rows = list(example["doing"]) if example else [("", "", "", "")] * Y.get("table_rows", 4)
     slide.shapes._spTree.append(table(ids, "جدول المهام الجارية", ML, Y["table"], MR - ML, TABLE_COLS, header, rows,
                                       hdr_h=TABLE_HDR_H, row_h=TABLE_ROW_H, sz_hdr=10, sz_body=10.5))
     slide.notes_slide.notes_text_frame.text = NOTES_TEXT
@@ -607,19 +653,26 @@ def set_runs(sp, items, bullet=None, bullet_color=None, algn="r"):
 def fill_example(slide, ex, logo_png, cfg):
     pal = cfg["pal"]
     ph = {sp.placeholder_format.idx: sp for sp in slide.placeholders}
-    set_runs(ph[IDX["entity"]], [ex["entity"]])
-    set_runs(ph[IDX["period"]], [ex["period"]])
-    set_runs(ph[IDX["author"]], [ex["author"]])
-    set_runs(ph[IDX["to"]], [ex["to"]])
-    set_runs(ph[IDX["summary"]], [ex["summary"]])
+
+    def put(key, items, **kw):  # الحقل قد لا يوجد في النسخة المختصرة
+        if IDX[key] in ph:
+            set_runs(ph[IDX[key]], items, **kw)
+
+    put("entity", [ex["entity"]])
+    put("period", [ex["period"]])
+    put("period_from", [ex["period_from"]])
+    put("period_to", [ex["period_to"]])
+    put("author", [ex["author"]])
+    put("to", [ex["to"]])
+    put("summary", [ex.get("summary_compact", ex["summary"]) if cfg["compact"] else ex["summary"]])
     for i, key in enumerate(("kpi_done", "kpi_doing", "kpi_next")):
-        set_runs(ph[IDX[key]], [ex["kpis"][i]], algn="ctr")
-    set_runs(ph[IDX["done"]], ex["done"], bullet="•", bullet_color=pal["green_text"])
-    set_runs(ph[IDX["next"]], ex["next"], bullet="•", bullet_color=pal["purple"])
-    set_runs(ph[IDX["decision"]], ex["decision"])
-    set_runs(ph[IDX["challenges"]], [ex["challenges"]])
-    set_runs(ph[IDX["sign_name"]], [ex["sign_name"]])
-    set_runs(ph[IDX["sign_date"]], [ex["sign_date"]])
+        put(key, [ex["kpis"][i]], algn="ctr")
+    put("done", ex["done"], bullet="•", bullet_color=pal["green_text"])
+    put("next", ex["next"], bullet="•", bullet_color=pal["purple"])
+    put("decision", ex["decision"])
+    put("challenges", [ex["challenges"]])
+    put("sign_name", [ex["sign_name"]])
+    put("sign_date", [ex["sign_date"]])
     if logo_png and IDX["logo"] in ph:
         ph[IDX["logo"]].insert_picture(logo_png)
 
@@ -637,6 +690,16 @@ GUIDE = [
     ("الخط", "القالب مبني على خط IBM Plex Sans Arabic بوزنيه Regular وBold للعناوين وMedium للمتن (مرفقة في مجلد fonts، ترخيص مفتوح). ثبّت الملفات الأربعة بالنقر المزدوج ← «تثبيت»؛ لا يحتاج صلاحيات مسؤول. دون تثبيتها يستبدلها أوفيس بخط قريب."),
     ("نصائح الكتابة", "ابدأ كل مهمة بالنتيجة لا بالنشاط («نُشرت اللوحة واعتمدتها 3 إدارات» بدل «عملت على اللوحة»). خمسة بنود كحد أقصى لكل قسم. بنود الأسبوع المقبل: نتيجة + يوم. الأعداد في الخلاصة تطابق البطاقات وحالات الجدول. التحديات: السبب ← الأثر ← الموعد الجديد ← هل يحتاج تدخّلك؟ القرار المطلوب: طلب واحد بموعد وأثر للتأخير."),
 ]
+GUIDE_COMPACT_TIPS = ("ابدأ كل مهمة بالنتيجة لا بالنشاط («نُشرت اللوحة واعتمدتها 3 إدارات» بدل «عملت على اللوحة»). "
+                      "سبعة بنود كحد أقصى في المنجز وستة صفوف في الجدول. الأعداد في الخلاصة تطابق البطاقات وحالات الجدول. "
+                      "التحديات: السبب ← الأثر ← الموعد الجديد ← هل يحتاج تدخّلك؟ واكتب «لا توجد تحديات» إن لم توجد.")
+
+
+def guide_items(compact):
+    items = list(GUIDE)
+    if compact:
+        items[-1] = ("نصائح الكتابة", GUIDE_COMPACT_TIPS)
+    return items
 
 NOTES_TEXT = ("دليل سريع: اكتب داخل الحقول الإرشادية (لا تُطبع إن بقيت فارغة). لأسبوع جديد: Ctrl+D على هذه الشريحة فيزيد "
               "العداد تلقائيًا. للتصدير: ملف ← تصدير ← PDF ← خيارات ← الشريحة الحالية. التفاصيل في الشريحة المخفية الأخيرة.")
@@ -655,7 +718,7 @@ def add_guide_slide(prs, blank_layout, cfg):
                         [para(run("هذه الشريحة مخفية: لا تظهر في العرض ولا في ملف PDF (وفي الطباعة تأكد من إلغاء «طباعة الشرائح المخفية»).", 10, pal["mint"]), algn="r")],
                         anchor="ctr"))
     y = 42
-    for i, (head, body) in enumerate(GUIDE):
+    for i, (head, body) in enumerate(guide_items(cfg["compact"])):
         if body is None:
             tree.append(textbox(ids, "عنوان فرعي", 12, y, 186, 8, [para(run(head, 14, pal["navy"], True), algn="r")], anchor="ctr"))
             y += 10
@@ -728,7 +791,7 @@ def patch_master(prs, cfg):
     pres.find(qn("p:sldSz")).attrib.pop("type", None)  # حجم مخصص A4 عمودي
     now = _dt.datetime.now(_dt.timezone.utc).replace(microsecond=0)
     cp = prs.core_properties
-    cp.title = "التقرير الأسبوعي للمهام — قالب"
+    cp.title = "التقرير الأسبوعي للمهام — قالب" + (" مختصر" if cfg["compact"] else "")
     cp.author = ""
     cp.last_modified_by = ""
     cp.created = cp.modified = now
@@ -778,9 +841,12 @@ def make_logo_png(path):
     return path
 
 
-def build(out, example=False, font=DEFAULT_FONT, palette=None, logo_png=None, body_font=None, weeks=1, thumbnail=None):
-    global CONFIG
-    CONFIG = {"font": font, "body_font": body_font or DEFAULT_BODY_FONT, "pal": dict(PALETTE, **(palette or {}))}
+def build(out, example=False, font=DEFAULT_FONT, palette=None, logo_png=None, body_font=None, weeks=1, thumbnail=None,
+          compact=False):
+    global CONFIG, Y
+    Y = Y_COMPACT if compact else Y_FULL
+    CONFIG = {"font": font, "body_font": body_font or DEFAULT_BODY_FONT, "pal": dict(PALETTE, **(palette or {})),
+              "compact": compact}
     prs = Presentation()
     prs.slide_width = Emu(E(PAGE_W))
     prs.slide_height = Emu(E(PAGE_H))
@@ -821,7 +887,10 @@ if __name__ == "__main__":
     ap.add_argument("--logo", default=None)
     ap.add_argument("--thumbnail", default=None, help="صورة JPEG تُستخدم معاينةً مصغرة للملف")
     ap.add_argument("--table-ltr", action="store_true", help="جدول بترتيب فعلي من اليسار (لبرامج تتجاهل rtl مثل LibreOffice)")
+    ap.add_argument("--compact", action="store_true",
+                    help="نسخة مختصرة: بلا خطة الأسبوع المقبل ولا صندوق القرار ولا التذييل، والفترة من/إلى")
     a = ap.parse_args()
     if a.table_ltr:
         TABLE_RTL = False
-    print(build(a.out, a.example, a.font, logo_png=a.logo, body_font=a.body_font, weeks=a.weeks, thumbnail=a.thumbnail))
+    print(build(a.out, a.example, a.font, logo_png=a.logo, body_font=a.body_font, weeks=a.weeks, thumbnail=a.thumbnail,
+                compact=a.compact))

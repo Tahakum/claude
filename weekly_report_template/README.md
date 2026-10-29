@@ -12,6 +12,8 @@
 | `out/التقرير_الأسبوعي_مثال.pptx` و `.pdf` | مثال معبّأ ببيانات تخيلية (أسبوع واحد). |
 | `out/التقرير_الأسبوعي_مثال_أسبوعان.pptx` و `.pdf` | المثال نفسه لأسبوعين متتاليين: يوضح العداد التلقائي وشكل «لا توجد تحديات». |
 | `out/preview_example.png` | معاينة سريعة. |
+| `out/التقرير_الأسبوعي_قالب_مختصر.pptx` | **النسخة المختصرة**: بلا «خطة الأسبوع المقبل» ولا «قرار مطلوب من المدير» ولا سطر التذييل والتوقيع، وبطاقتا أرقام (منجزة/جارية)، والفترة حقلا تاريخ «من» و«إلى». مساحة أكبر للمنجز (7 بنود) والجدول (6 صفوف). |
+| `out/التقرير_الأسبوعي_مثال_مختصر.pptx` و `.pdf` و `out/preview_compact.png` | مثال النسخة المختصرة لأسبوعين. |
 | `fonts/` | خط IBM Plex Sans Arabic (Regular، Medium، SemiBold، Bold) بترخيص OFL مفتوح. ثبّت الأربعة قبل فتح القالب. |
 | `build_template.py` | المولّد (Python + python-pptx). فيه كل الألوان والنصوص والمقاسات، ويعيد بناء القالب والأمثلة. |
 | `render.sh` | تحويل PPTX إلى PDF وصور للمراجعة (LibreOffice). |
@@ -52,6 +54,7 @@
 ```bash
 python3 build_template.py --out "out/التقرير_الأسبوعي_قالب.pptx"
 python3 build_template.py --out "out/التقرير_الأسبوعي_مثال.pptx" --example
+python3 build_template.py --out "out/التقرير_الأسبوعي_قالب_مختصر.pptx" --compact
 python3 build_template.py --out out/qa/example_ltr.pptx --example --table-ltr   # للمعاينة في LibreOffice
 ./render.sh out/qa/example_ltr.pptx ex
 ```
